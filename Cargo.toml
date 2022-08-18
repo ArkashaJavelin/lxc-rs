@@ -9,6 +9,11 @@ license = "MIT"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+os_info = "3"
+
+[lib]
+name = "lxc_rs"
+path = "src/lxd.rs"
 
 [profile.dev]
 opt-level = 1

@@ -1,4 +1,6 @@
+extern crate lxd_rs;
+
 fn main() { 
-   print!("Hello, Linux containers)");
+   lxd_rs::Container::get_my_lxc();
 }
 
