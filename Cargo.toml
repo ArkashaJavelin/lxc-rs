@@ -1,8 +1,17 @@
 [package]
-name = "lxc-interface"
-version = "0.1.0"
+name = "lxc_rs"
+version = "0.1.1"
+authors = ["ArkashaJavelin"]
 edition = "2021"
+description = "A library for working with Linux Containers"
+license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+
+[profile.dev]
+opt-level = 1
+
+[profile.release]
+opt-level = 3
