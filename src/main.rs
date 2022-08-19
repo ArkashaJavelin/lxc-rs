@@ -1,6 +1,6 @@
-extern crate lxd_rs;
+use lxc_rs::lxc::Container;
 
 fn main() { 
-   lxd_rs::Container::get_my_lxc();
+   Container::get_my_lxc();
 }
 
