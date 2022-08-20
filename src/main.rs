@@ -1,6 +1,8 @@
-use lxc_rs::lxc::Container;
+extern crate lxc_rs;
+
+use lxc_rs::image;
 
 fn main() { 
-   Container::get_my_lxc();
+   image::refresh_lxc_image(String::from("e564b08cf2f6"));
 }
 

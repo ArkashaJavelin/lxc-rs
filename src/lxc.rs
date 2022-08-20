@@ -1,5 +1,21 @@
-pub mod lxc {
-  mod Template {
+//! Lxc-rs
+//!
+//! A library for working with Linux Daemon && Linux Containers
+
+pub use daemon::*;
+pub use image::*;
+pub use container::*; 
+pub use storage::*;
+pub use volume::*;
+pub use profile::*;
+pub use project::*;
+pub use operation::*;
+pub use remote_connection::*;
+pub use config::*;
+pub use network::*;
+pub use snapshot::*;
+
+  mod template {
     use std::process::Command;
 
     pub fn template(cm: &str, args: Vec<String>, _err_message: &str) {
@@ -14,46 +30,55 @@ pub mod lxc {
   }
 
   // LXdaemon
-  pub mod Daemon {
-    use crate::lxc::Template::template;
-
+  pub mod daemon {
+    use crate::template::template;
+    
+    /// Initialize a linux daemon
     pub fn lxd_init() {
       template("lxd", vec!["init".to_string()], "Try to initialize lxd was failed");
     }
-
+    
+    /// Get current Lxd version
     pub fn get_lxc_version() {
       template("lxc", vec!["--version".to_string()], "Try of get lxc was failed");
     }
   }
 
   // Images
-  pub mod Image {
-    use crate::lxc::Template::template;
-
-    pub fn get_my_lxc_images() {
+  pub mod image {
+    use crate::template::template;
+    
+    /// Get you'r local lxc images
+    pub fn get_local_lxc_images() {
       template("lxc", vec!["image".to_string(), "list".to_string()], "Try of get lxc was failed");
     }
-
+    
+    /// Get lxc images from lxc registry
     pub fn get_lxc_images() {
       template("lxc", vec!["image".to_string(), "list".to_string(), "images:".to_string()], "Try of get lxc images was failed");
     }
-
+    
+    /// Search lxc images in registry 
     pub fn search_lxc_image(image: String) {
       template("lxc", vec!["image".to_string(), "list".to_string(), "images:".to_string(), image.to_string()], "Try of get some lxc image was failed");
     }
-
+    
+    /// Get more infromation about current lxc image
     pub fn get_lxc_image_info(image: String) {
       template("lxc", vec!["image".to_string(), "info".to_string(), image.to_string()], "Try of getting image information was failed");
     }
-
+    
+    /// Get a tiny infromation about current lxc image
     pub fn get_lxc_image_show(image: String) {
       template("lxc", vec!["image".to_string(), "show".to_string(), image.to_string()], "Try of getting image information was failed");
     }
-
+    
+    /// Copy lxc image from registry to local with alias
     pub fn copy_lxc_image(image: String, alias: String) {
       template("lxc", vec!["image".to_string(), "copy".to_string(), "images:".to_string(), image.to_string(), "--alias".to_string(), alias.to_string()], "Failed to copy image with alias from remote store to local");
     }
-
+    
+    /// 
     pub fn publish_lxc_image(container: String, alias: String) {
       template("lxc", vec!["publish".to_string(), container.to_string(), "--alias".to_string(), alias.to_string()], "Failed to publish linux container image");
     }
@@ -61,96 +86,118 @@ pub mod lxc {
     pub fn export_lxc_image(image: String, name: String) {
       template("lxc", vec!["image".to_string(), "export".to_string(), image.to_string(), name.to_string()], "Failed to export image");
     }
-
+    
+    /// Import lxc image with alias
     pub fn import_lxc_image(image: String, import_name: String) {
       template("lxc", vec!["image".to_string(), "import".to_string(), image.to_string(), "--alias".to_string(), import_name.to_string()], "Failed to import image");
     }
-
+    
+    /// Delete lxc image
     pub fn del_lxc_image(image: String) {
       template("lxc", vec!["image".to_string(), "delete".to_string(), image.to_string()], "Try of delete image was failed");
     }
-
-    pub fn refresh_image(image: String) {
+    
+    /// Refresh lxc image
+    pub fn refresh_lxc_image(image: String) {
       template("lxc", vec!["image".to_string(), "refresh".to_string(), image.to_string()], "Failed to refresh a current image");
     }
-
+    
+    /// Set property to image
     pub fn set_image_property(image: String, key: String, value: String) {
       template("lxc", vec!["image".to_string(), "set-property".to_string(), image.to_string(), key.to_string(), value.to_string()], "Failed to set image property");
     }
-
+    
+    /// Unset property from image
     pub fn unset_image_property(image: String, key: String) {
       template("lxc", vec!["image".to_string(), "unset-property".to_string(), image.to_string(), key.to_string()], "Failed to unset image property");
     }
-
+    
+    /// Get image aliases
     pub fn get_image_aliases() {
       template("lxc", vec!["image".to_string(), "alias".to_string(), "list".to_string()], "Failed to get image aliases");
     }
-
+    
+    /// Create image alias
     pub fn create_image_alias(alias: String, fingerprint: String) {
       template("lxc", vec!["image".to_string(), "create".to_string(), "create".to_string(), alias.to_string(), fingerprint.to_string()], "Failed to create image alias");
     }
-
+    
+    /// Delete image alias
     pub fn delete_image_alias(alias: String) {
       template("lxc", vec!["image".to_string(), "delete".to_string(), alias.to_string()], "Failed to delete image alias");
     }
-
+    
+    /// Rename image alias
     pub fn rename_image_alias(old_name: String, new_name: String) {
       template("lxc", vec!["image".to_string(), "rename".to_string(), old_name.to_string(), new_name.to_string()], "Failed to rename image alias"); 
     }
   }
 
   // Container
-  pub mod Container {
-    use crate::lxc::Template::template;
-
-    pub fn get_my_lxc() {
+  pub mod container {
+    use crate::template::template;
+    
+    /// Get local lxc container
+    pub fn get_local_lxc() {
       template("lxc", vec!["list".to_string()], "Try of get lxc was failed");
     }
- 
+    
+    /// Launch new lxc container
     pub fn launch_lxc(image: String, container: String) {
       template("lxc", vec!["launch".to_string(), format!("images:{}", image.to_string()), container.to_string()], "Try of launching container was failed");
     }
-
+    
+    /// Get information about lxc container
     pub fn get_lxc_info(container: String) {
       template("lxc", vec!["info".to_string(), container.to_string()], "Failed to get linux container information");
     }
-
+    
+    /// Start lxc container
     pub fn start_lxc(container: String) {
       template("lxc", vec!["start".to_string(), container.to_string()], "Try of starting lxc container was failed");
     }
-
+    
+    /// Stop lxc container
     pub fn stop_lxc(container: String) {
       template("lxc", vec!["stop".to_string(), container.to_string()], "Try of stopping lxc container was failed");
     }
-
+   
+    /// Delete lxc container
     pub fn del_lxc(container: String) {
       template("lxc", vec!["delete".to_string(), container.to_string()], "Failed to delete linux container");
     }
-
+    
+    /// Exec in lxc container
     pub fn exec_lxc(container: String, command: String) {
       template("lxc", vec!["exec".to_string(), container.to_string(), "--".to_string(), String::from(command)], "Failed to execute in lxc !");
     }
-
+    
+    /// Rename lxc container
     pub fn rename_lxc(container: String, new_name: String) {
       template("lxc", vec!["move".to_string(), container.to_string(), new_name.to_string()], "Failed to rename {&container#?}");
     }
-
+    
+    /// Restart lxc container
     pub fn restart_lxc(container: String) {
       template("lxc", vec!["restart".to_string(), container.to_string()], "Failed to restart container");
     }
-
+    
+    /// Copy lxc container
     pub fn copy_lxc(container: String, to_container: String) {
       template("lxc", vec!["copy".to_string(), container.to_string(), to_container.to_string()], "Failed to copy from first to second");
     }
-
+   
+    /// Get lxc configuration
     pub fn get_lxc_config(container: String) {
       template("lxc", vec!["config".to_string(), "show".to_string(), container.to_string()], "Failed to get lxc container configuration");
     }
-
+    
+    /// Publish file from local to lxc container
     pub fn push_file_in_lxc(file_path: String, container_path: String) {
       template("lxc", vec!["file".to_string(), "push".to_string(), file_path.to_string(), container_path.to_string()], "Failed to push files into container");
     }
-
+    
+    /// Pull file from container to local
     pub fn pull_file_from_lxc(container_path: String, file_path: String) {
       template("lxc", vec!["file".to_string(), "pull".to_string(), container_path.to_string(), file_path.to_string()], "Failed to pull files from container to current path");
    }
@@ -158,17 +205,20 @@ pub mod lxc {
 
 
   // Storage Pool && Storage Volume
-  pub mod Storage {
-    use crate::lxc::Template::template;
-
-    pub fn get_my_storages() {
+  pub mod storage {
+    use crate::template::template;
+    
+    /// Get local storages
+    pub fn get_local_storages() {
       template("lxc", vec!["storage".to_string(), "list".to_string()], "Failed to get storages");
     }
-
+    
+    /// Get infromation about current storage
     pub fn get_storage_info(storage: String) {
       template("lxc", vec!["storage".to_string(), "info".to_string(), storage.to_string()], "Failed to getting information about storage");
     }
-
+    
+    /// Create new storage
     pub fn create_storage(storage: String, fs: String, args: Vec<String>) {
       template("lxc", vec!["storage".to_string(), "create".to_string(), storage.to_string(), fs.to_string()], "Failed to create storage");
     }
@@ -190,8 +240,8 @@ pub mod lxc {
     }
   }
 
-  pub mod Volume {
-    use crate::lxc::Template::template;
+  pub mod volume {
+    use crate::template::template;
 
     pub fn get_volumes_by_storage(storage: String) {
       template("lxc", vec!["storage".to_string(), "volume".to_string(), "list".to_string(), storage.to_string()], "Failed to get volumes by current storage");
@@ -227,8 +277,8 @@ pub mod lxc {
   }
 
   //Profiles
-  pub mod Profile {
-    use crate::lxc::Template::template;
+  pub mod profile {
+    use crate::template::template;
  
     pub fn get_profiles() {
       template("lxc", vec!["profile".to_string(), "list".to_string()], "FF");
@@ -260,8 +310,8 @@ pub mod lxc {
   }
 
   // Networks
-  pub mod Network {
-    use crate::lxc::Template::template;
+  pub mod network {
+    use crate::template::template;
 
     pub fn get_networks() {
       template("lxc", vec!["network".to_string(), "list".to_string()], "Failed to....");
@@ -357,8 +407,8 @@ pub mod lxc {
   }
 
   // Snapshots
-  pub mod Snapshot {
-    use crate::lxc::Template::template;
+  pub mod snapshot {
+    use crate::template::template;
  
     pub fn create_lxc_stateless_snapshot(container: String, name: String) {
       template("lxc", vec!["snapshot".to_string(), container.to_string(), name.to_string()], "Failed to create stateless snapshot");
@@ -374,8 +424,8 @@ pub mod lxc {
   }
 
   // Config
-  pub mod Config {
-    use crate::lxc::Template::template;
+  pub mod config {
+    use crate::template::template;
 
     pub fn set_config_changes(key: String, value: String) {
       template("lxc", vec!["config".to_string(), "set".to_string(), key.to_string(), value.to_string()], "Failed to set some changes to config");
@@ -447,8 +497,8 @@ pub mod lxc {
   }
 
   // Remote connection
-  pub mod RemoteConnection {
-    use crate::lxc::Template::template;
+  pub mod remote_connection {
+    use crate::template::template;
 
     pub fn connect_to_remote_lxc(name: String, address: String) {
       template("lxc", vec!["remote".to_string(), "add".to_string(), name.to_string(), address.to_string()], "Failed to connect to remote lxc");
@@ -468,8 +518,8 @@ pub mod lxc {
   }
 
   // Operation
-  pub mod Operation {
-    use crate::lxc::Template::template;
+  pub mod operation {
+    use crate::template::template;
 
     pub fn get_background_operations() {
       template("lxc", vec!["operation".to_string(), "list".to_string()], "Failed to get background operations");
@@ -485,8 +535,8 @@ pub mod lxc {
   }
 
   // Project
-  pub mod Project {
-    use crate::lxc::Template::template;
+  pub mod project {
+    use crate::template::template;
 
     pub fn get_projects() {
       template("lxc", vec!["project".to_string(), "list".to_string()], "Failed to get all projects");
@@ -524,4 +574,4 @@ pub mod lxc {
       template("lxc", vec!["project".to_string(), "unset".to_string(), project.to_string(), key.to_string()], "Failed to unset project configuration key");
     }
   }
-}
+

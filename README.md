@@ -11,12 +11,14 @@ How to use?
 
 Example
 ```rs
-use lxc_rs::lxc::{Container};
+extern crate lxc_rs;
+
+use lxc_rs::{Container};
 
 fn main() {
   Container.get_my_lxc(); // Prints you a list of you'r lxc in console
 }
 ```
 
-(Docs): Here is link: https://linuxcontainers.org/lxc/documentation/
-(Repo): wefwefw
+(Docs): https://linuxcontainers.org/lxc/documentation/
+(Repo): https://github.com/lxc/lxc
