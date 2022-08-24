@@ -1,5 +1,5 @@
 [package]
-name = "lxc_rs"
+name = "lxc_rust"
 version = "0.1.1"
 authors = ["ArkashaJavelin"]
 edition = "2021"
@@ -9,6 +9,7 @@ license = "MIT"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+tokio = { version = "1.20.1", features = ["full"] }
 os_info = "3"
 
 [lib]

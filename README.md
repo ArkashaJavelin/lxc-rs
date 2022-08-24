@@ -16,7 +16,7 @@ extern crate lxc_rs;
 use lxc_rs::{Container};
 
 fn main() {
-  Container.get_my_lxc(); // Prints you a list of you'r lxc in console
+  Container.get_local_lxc(); // Prints you a list of you'r local lxc in console
 }
 ```
 
