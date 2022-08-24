@@ -50,11 +50,11 @@ pub use snapshot::*;
     
     /// Get you'r local lxc images
     pub fn get_local_lxc_images() {
-      template("lxc", vec!["image".to_string(), "list".to_string()], "Try of get lxc was failed");
+      template("lxc", vec!["image".to_string(), "list".to_string(), "local:".to_string()], "Try of get lxc was failed");
     }
     
     /// Get lxc images from lxc registry
-    pub fn get_lxc_images() {
+    pub fn get_registry_lxc_images() {
       template("lxc", vec!["image".to_string(), "list".to_string(), "images:".to_string()], "Try of get lxc images was failed");
     }
     
@@ -139,7 +139,7 @@ pub use snapshot::*;
     
     /// Get local lxc container
     pub fn get_local_lxc() {
-      template("lxc", vec!["list".to_string()], "Try of get lxc was failed");
+      template("lxc", vec!["list".to_string(), "local:".to_string()], "Try of get lxc was failed");
     }
     
     /// Launch new lxc container
@@ -222,19 +222,23 @@ pub use snapshot::*;
     pub fn create_storage(storage: String, fs: String, args: Vec<String>) {
       template("lxc", vec!["storage".to_string(), "create".to_string(), storage.to_string(), fs.to_string()], "Failed to create storage");
     }
-
+    
+    /// Set property in config of current storage
     pub fn set_storage_config_property(storage: String, key: String, value: String) {
       template("lxc", vec!["storage".to_string(), "set".to_string(), storage.to_string(), key.to_string(), value.to_string()], "Failed to set storage configuration property");
     }
-
+    
+    /// Unset property in config of current storage
     pub fn unset_storage_config_property(storage: String, key: String) {
       template("lxc", vec!["storage".to_string(), "unset".to_string(), storage.to_string(), key.to_string()], "Failed to unset storage property");
     }
-
+    
+    /// Get current proerty of storage config
     pub fn get_storage_config_property(storage: String, key: String) {
       template("lxc", vec!["storage".to_string(), "get".to_string(), storage.to_string(), key.to_string()], "Failed to get storage config property");
     }
 
+    /// Delete current storage
     pub fn del_storage(storage: String) {
       template("lxc", vec!["storage".to_string(), "delete".to_string(), storage.to_string()], "Failed to delete current storage");
     }
@@ -242,35 +246,43 @@ pub use snapshot::*;
 
   pub mod volume {
     use crate::template::template;
-
+    
+    /// Get volumes by current storage
     pub fn get_volumes_by_storage(storage: String) {
       template("lxc", vec!["storage".to_string(), "volume".to_string(), "list".to_string(), storage.to_string()], "Failed to get volumes by current storage");
     }
-
+   
+    /// Create volume of current storage
     pub fn create_volume(storage: String, name: String) {
       template("lxc", vec!["storage".to_string(), "volume".to_string(), "create".to_string(), storage.to_string(), name.to_string()], "Failed to create volume");
     }
-
+    
+    /// Attach volume from current storage
     pub fn attach_volume_lxc(storage: String, volume: String, container: String, path: String) {
       template("lxc", vec!["storage".to_string(), "volume".to_string(), "attach".to_string(), storage.to_string(), volume.to_string(), container.to_string(), "data".to_string(), path.to_string()], "Failed to attach lxc volume");
     }
-
+   
+    /// Attach volume profile from current storage
     pub fn attach_profile_volume_lxc(storage: String, volume: String, profile: String) {
       template("lxc", vec!["storage".to_string(), "volume".to_string(), "attach-profile".to_string(), storage.to_string(), volume.to_string(), profile.to_string()], "Failed to attach profile lxc volume");
     }
-
+    
+    /// Detach volume of the current storage
     pub fn detach_volume_lxc(storage: String, volume: String, container: String) {
       template("lxc", vec!["storage".to_string(), "volume".to_string(), "detach".to_string(), storage.to_string(), volume.to_string(), container.to_string()], "Failed to detach lxc volume"); 
     }
-
+    
+    /// Detach volume profile from current storage
     pub fn detach_profile_volume_lxc(storage: String, volume: String, profile: String) {
       template("lxc", vec!["storage".to_string(), "volume".to_string(), "detach-profile".to_string(), storage.to_string(), volume.to_string(), profile.to_string()], "Failed to detach profile volume lxc");
     }
-
+    
+    /// Delete volume of the current storage
     pub fn del_volume_lxc(storage: String, volume: String) {
       template("lxc", vec!["storage".to_string(), "volume".to_string(), "delete".to_string(), storage.to_string(), volume.to_string()], "Failed to delete lxc volume");
     }
-
+    
+    /// Rename volume of the current storage
     pub fn rename_volume_lxc(storage: String, old_name: String, new_name: String) {
       template("lxc", vec!["storage".to_string(), "volume".to_string(), "rename".to_string(), storage.to_string(), old_name.to_string(), new_name.to_string()], "Failed to rename current volume by that storage");
     }
@@ -279,129 +291,159 @@ pub use snapshot::*;
   //Profiles
   pub mod profile {
     use crate::template::template;
- 
-    pub fn get_profiles() {
-      template("lxc", vec!["profile".to_string(), "list".to_string()], "FF");
+    
+    /// Get local profiles 
+    pub fn get_local_profiles() {
+      template("lxc", vec!["profile".to_string(), "list".to_string()], "Failed to get local profiles");
     }
-
+    
+    /// Get info of the current profile
     pub fn get_profile_info(profile: String) {
-      template("lxc", vec!["profile".to_string(), "show".to_string(), profile.to_string()], "Failed....");
+      template("lxc", vec!["profile".to_string(), "show".to_string(), profile.to_string()], "Failed to get info of the current profile");
     }
-
+    
+    /// Delete current profile
     pub fn del_profile(profile: String) {
-      template("lxc", vec!["profile".to_string(), "delete".to_string(), profile.to_string()], "Failed....");
+      template("lxc", vec!["profile".to_string(), "delete".to_string(), profile.to_string()], "Failed to delete current profile");
     }
-
+    
+    /// Copy current profile
     pub fn copy_profile(first: String, second: String) {
-      template("lxc", vec!["profile".to_string(), "copy".to_string(), first.to_string(), second.to_string()], "Failed....");
+      template("lxc", vec!["profile".to_string(), "copy".to_string(), first.to_string(), second.to_string()], "Failed to copy current profile");
     }
-
+    
+    /// Rename current profile
     pub fn rename_profile(first: String, second: String) {
-      template("lxc", vec!["profile".to_string(), "rename".to_string(), first.to_string(), second.to_string()], "Failed...");
+      template("lxc", vec!["profile".to_string(), "rename".to_string(), first.to_string(), second.to_string()], "Failed to rename current profile");
     }
-
+    
+    /// Create new profile
     pub fn create_profile(profile: String) {
-      template("lxc", vec!["profile".to_string(), "create".to_string(), profile.to_string()], "Failed.....");
+      template("lxc", vec!["profile".to_string(), "create".to_string(), profile.to_string()], "Failed to create new profile");
     }
-
+    
+    /// Remove profile from lxc 
     pub fn take_off_profile_from_lxc(container: String) {
-      template("lxc", vec!["profile".to_string(), "remove".to_string(), container.to_string()], "Failed to...");
+      template("lxc", vec!["profile".to_string(), "remove".to_string(), container.to_string()], "Failed to remove profile from current linux container");
     }
   }
 
   // Networks
   pub mod network {
     use crate::template::template;
-
-    pub fn get_networks() {
-      template("lxc", vec!["network".to_string(), "list".to_string()], "Failed to....");
+    
+    /// Get local networks
+    pub fn get_local_networks() {
+      template("lxc", vec!["network".to_string(), "list".to_string(), "local:".to_string()], "Failed to get local networks");
     }
-
+    
+    /// Delete current network
     pub fn del_network(network: String) {
       template("lxc", vec!["network".to_string(), "delete".to_string(), network.to_string()], "Failed to delete network");
     }
-
+    
+    /// Get information about current network
     pub fn get_network_info(network: String) {
       template("lxc", vec!["network".to_string(), "show".to_string(), network.to_string()], "Failed to showing information about current network");
     }
-
+    
+    /// Create new network
     pub fn create_network(network: String) {
       template("lxc", vec!["network".to_string(), "create".to_string(), network.to_string()], "Failed to create network");
     }
-
+    
+    /// Rename current network
     pub fn rename_network(first: String, second: String) {
       template("lxc", vec!["network".to_string(), "rename".to_string(), first.to_string(), second.to_string()], "Failed to rename current network");
     }
-
+    
+    /// Copy current network
     pub fn copy_network(first: String, second: String) {
       template("lxc", vec!["network".to_string(), "copy".to_string(), first.to_string(), second.to_string()], "Failed to copy network");
     }
-
+    
+    /// Delete current ACL network
     pub fn del_network_acl(acl: String) {
       template("lxc", vec!["network".to_string(), "acl".to_string(), "delete".to_string(), acl.to_string()], "Failed to delete acl network");
     }
-
-    pub fn get_network_zones() {
-      template("lxc", vec!["network".to_string(), "zone".to_string(), "list".to_string()], "Failed to get network zones");
+   
+    /// Get local network zones
+    pub fn get_local_network_zones() {
+      template("lxc", vec!["network".to_string(), "zone".to_string(), "list".to_string(), "local".to_string()], "Failed to get network zones");
     }
-
+    
+    /// Get dhcp leases by current network
     pub fn get_dhcp_network_leases(network: String) {
       template("lxc", vec!["network".to_string(), "list-leases".to_string(), network.to_string()], "Failed to get network dhcp leases");
     }
-
+    
+    /// Get forwards by current network
     pub fn get_network_forwards(network: String) {
       template("lxc", vec!["network".to_string(), "forward".to_string(), "list".to_string(), network.to_string()], "Failed to get network forwards");
     }
-
-    pub fn set_network_config_key(network: String, key: String, value: String) {
+    
+    /// Uset property in current network config
+    pub fn set_network_config_property(network: String, key: String, value: String) {
       template("lxc", vec!["network".to_string(), "set".to_string(), network.to_string(), key.to_string(), value.to_string()], "Failed to set key/value in network config");
     }
-
+    
+    /// Unset property from current network config 
     pub fn unset_network_config_key(network: String, key: String) {
       template("lxc", vec!["network".to_string(), "unset".to_string(), network.to_string(), key.to_string()], "Failed to unset key in network config");
     }
-
+    
+    /// Create network zone
     pub fn create_network_zone(title: String) {
       template("lxc", vec!["network".to_string(), "zone".to_string(), "create".to_string(), title.to_string()], "Failed to create network zone");
     }
-
-    pub fn set_network_zone_key(zone: String, title: String, value: String) {
+    
+    /// Set network zone property
+    pub fn set_network_zone_property(zone: String, title: String, value: String) {
       template("lxc", vec!["network".to_string(), "zone".to_string(), "set".to_string(), zone.to_string(), title.to_string(), value.to_string()], "Failed to set network zone key/value");
     }
-
+    
+    /// Unset network zone property
     pub fn unset_network_zone_key(zone: String, key: String) {
       template("lxc", vec!["network".to_string(), "zone".to_string(), "unset".to_string(), zone.to_string(), key.to_string()], "Failed to unset network zone key");
     }
-
+    
+    /// Get information about current network zone
     pub fn get_network_zone_info(zone: String) {
       template("lxc", vec!["network".to_string(), "zone".to_string(), "show".to_string(), zone.to_string()], "Failed to get network zone information");
     }
-
+    
+    /// Delete current network zone
     pub fn del_network_zone(zone: String) {
       template("lxc", vec!["network".to_string(), "zone".to_string(), "delete".to_string(), zone.to_string()], "Failed to delete network zone");
     }
-
+    
+    /// Get network records by current zone
     pub fn get_network_zone_records(zone: String) {
       template("lxc", vec!["network".to_string(), "zone".to_string(), "record".to_string(), "list".to_string(), zone.to_string()], "Failed to get network zone records");
     }
-
+    
+    /// Get network records by current zone
     pub fn create_network_zone_record(zone: String, title: String) {
       template("lxc", vec!["network".to_string(), "zone".to_string(), "record".to_string(), "create".to_string(), zone.to_string(), title.to_string()], "Failed to create network zone record");
     }
-
+    
+    /// Delete network record by current zone
     pub fn del_network_zone_record(zone: String, title: String) {
       template("lxc", vec!["network".to_string(), "zone".to_string(), "record".to_string(), "delete".to_string(), zone.to_string(), title.to_string()], "Failed to delete network zone record");
     }
-
+    
+    /// Get information about current zone record
     pub fn get_network_zone_record_info(zone: String, title: String) {
       template("lxc", vec!["network".to_string(), "zone".to_string(), "record".to_string(), "show".to_string(), zone.to_string(), title.to_string()], "Failed to get network zone record information");
     }
-
-    pub fn set_network_zone_record_key(zone: String, title: String, key: String, value: String) {
+    
+    /// Set network zone record property
+    pub fn set_network_zone_record_property(zone: String, title: String, key: String, value: String) {
       template("lxc", vec!["network".to_string(), "zone".to_string(), "record".to_string(), "set".to_string(), zone.to_string(), title.to_string(), key.to_string(), value.to_string()], "Failed to set network zone record key/value");
     }
-
-    pub fn unset_network_zone_record_key(zone: String, title: String, key: String) {
+    
+    /// Unset network zone record property 
+    pub fn unset_network_zone_record_property(zone: String, title: String, key: String) {
       template("lxc", vec!["network".to_string(), "zone".to_string(), "record".to_string(), "unset".to_string(), zone.to_string(), title.to_string(), key.to_string()], "Failed to unset network zone record key");
     }
   }
@@ -409,15 +451,18 @@ pub use snapshot::*;
   // Snapshots
   pub mod snapshot {
     use crate::template::template;
- 
+    
+    /// Create stateless snapshot for current container
     pub fn create_lxc_stateless_snapshot(container: String, name: String) {
       template("lxc", vec!["snapshot".to_string(), container.to_string(), name.to_string()], "Failed to create stateless snapshot");
     }
-
+    
+    /// Restore snapshot by current container
     pub fn restore_lxc_snapshot(container: String, name: String) {
       template("lxc", vec!["restore".to_string(), container.to_string(), name.to_string()], "Failed to restore snapshot");
     }
-
+    
+    /// Delete snapshot by current container
     pub fn del_lxc_snapshot(container: String, name: String) {
       template("lxc", vec!["delete".to_string(), format!("{}/{}", container.to_string(), name.to_string())], "Failed to delete snapshot");
     }
@@ -426,71 +471,88 @@ pub use snapshot::*;
   // Config
   pub mod config {
     use crate::template::template;
-
-    pub fn set_config_changes(key: String, value: String) {
+    
+    /// Set config property
+    pub fn set_config_property(key: String, value: String) {
       template("lxc", vec!["config".to_string(), "set".to_string(), key.to_string(), value.to_string()], "Failed to set some changes to config");
     }
-
-    pub fn get_config_value(key: String) {
+    
+    /// Get current key from config
+    pub fn get_config_key(key: String) {
       template("lxc", vec!["config".to_string(), "get".to_string(), key.to_string()], "Failed to get value from config");
     }
-
-    pub fn unset_config_key(key: String) {
-      template("lxc", vec!["config".to_string(), "unset".to_string(), key.to_string()], "Failed to unset key from config file...");
+    
+    /// Unset config property
+    pub fn unset_config_property(key: String) {
+      template("lxc", vec!["config".to_string(), "unset".to_string(), key.to_string()], "Failed to unset key from config file");
     }
-
+    
+    /// Get trust users of the current config
     pub fn get_trust_config_users() {
-      template("lxc", vec!["config".to_string(), "trust".to_string(), "list".to_string()], "Failed to get trust configuration users..........");
+      template("lxc", vec!["config".to_string(), "trust".to_string(), "list".to_string()], "Failed to get trust configuration users");
     }
-
+    
+    /// Get active certificate trust tokens by current config 
     pub fn get_active_certificate_config_trust_tokens() {
       template("lxc", vec!["config".to_string(), "trust".to_string(), "list-tokens".to_string()], "Failed to get trust active tokens in config");
     }
-
+    
+    /// Delete trust user by current config
     pub fn del_trust_config_user(fingerprint: String) {
       template("lxc", vec!["config".to_string(), "trust".to_string(), "remove".to_string(), fingerprint.to_string()], "Failed to delete trusted config users");
     }
-
+    
+    /// Show trust user by current config 
     pub fn show_trust_config_user(fingerprint: String) {
       template("lxc", vec!["config".to_string(), "trust".to_string(), "show".to_string(), fingerprint.to_string()], "Failed to show trust configuration information");
     }
-
+    
+    /// Get templates by current config
     pub fn get_config_templates(fingerprint: String) {
       template("lxc", vec!["config".to_string(), "template".to_string(), "list".to_string(), fingerprint.to_string()], "Failed to get config templates");
     }
-
+    
+    /// Delete current template by config
     pub fn del_config_template(fingerprint: String, title: String) {
       template("lxc", vec!["config".to_string(), "template".to_string(), "delete".to_string(), fingerprint.to_string(), title.to_string()], "Failed to delete configuration template by current config");
     }
-
+    
+    /// Get template details by current config
     pub fn get_config_template_details(fingerprint: String, title: String) {
       template("lxc", vec!["config".to_string(), "template".to_string(), "show".to_string(), fingerprint.to_string(), title.to_string()], "Failed to get details about current configuration template");
     }
-
+    
+    /// Create config template
     pub fn create_config_template(fingerprint: String, title: String) {
       template("lxc", vec!["config".to_string(), "template".to_string(), "create".to_string(), fingerprint.to_string(), title.to_string()], "Failed to create config template");
     }
 
+    /// Show current metadata by config
     pub fn show_config_metadata(fingerprint: String) {
       template("lxc", vec!["config".to_string(), "metadata".to_string(), "show".to_string(), fingerprint.to_string()], "Failed to get config metadatas by current fingerprint");
     }
-
+    
+    /// Get devices by current config
     pub fn get_config_devices(fingerprint: String) {
       template("lxc", vec!["config".to_string(), "device".to_string(), "list".to_string(), fingerprint.to_string()], "Failed to get config devices");
     }
-
+    
+    /// Add new device for config 
     pub fn add_config_device() {
       template("lxc", vec!["config".to_string(), "device".to_string(), "add".to_string()], "Failed to add config device");
     }
-
+    
+    /// Unset current device from config
     pub fn unset_config_device(fingerprint: String, device: String, key: String) {
       template("lxc", vec!["config".to_string(), "device".to_string(), "unset".to_string(), fingerprint.to_string(), device.to_string(), key.to_string()], "Failed to unset configuration device");
     }
-
+    
+    /// Delete current device from config
     pub fn del_config_device(fingerprint: String, title: String) {
       template("lxc", vec!["config".to_string(), "device".to_string(), "remove".to_string(), fingerprint.to_string(), title.to_string()], "Failed to delete configuration device");
     }
-
+    
+    /// Get details about current device by config
     pub fn get_config_device_details(fingerprint: String) {
       template("lxc", vec!["config".to_string(), "device".to_string(), "show".to_string(), fingerprint.to_string()], "Failed to get config device configuration details");
     }
@@ -499,20 +561,24 @@ pub use snapshot::*;
   // Remote connection
   pub mod remote_connection {
     use crate::template::template;
-
-    pub fn connect_to_remote_lxc(name: String, address: String) {
+    
+    /// Connect to remote lxc registry 
+    pub fn connect_to_remote_registry(name: String, address: String) {
       template("lxc", vec!["remote".to_string(), "add".to_string(), name.to_string(), address.to_string()], "Failed to connect to remote lxc");
     }
-
-    pub fn rename_remote(instance: String, title: String) {
+    
+    /// Rename remote registry
+    pub fn rename_remote_registry(instance: String, title: String) {
       template("lxc", vec!["remote".to_string(), "rename".to_string(), instance.to_string(), title.to_string()], "Failed to rename remote");
-   }
-
-    pub fn get_remote_storages() {
+    }
+    
+    /// Get remote registries
+    pub fn get_remote_registries() {
       template("lxc", vec!["remote".to_string(), "list".to_string()], "Failed to get remote storages");
     }
-
-    pub fn get_remote_default_storage() {
+    
+    /// Get remote default registry
+    pub fn get_remote_default_registry() {
       template("lxc", vec!["remote".to_string(), "get-default".to_string()], "Failed to get default remote storage....");
     }
   }
@@ -520,15 +586,18 @@ pub use snapshot::*;
   // Operation
   pub mod operation {
     use crate::template::template;
-
+    
+    /// Get local background operations
     pub fn get_background_operations() {
-      template("lxc", vec!["operation".to_string(), "list".to_string()], "Failed to get background operations");
+      template("lxc", vec!["operation".to_string(), "list".to_string(), "local:".to_string()], "Failed to get background operations");
     }
-
+   
+    /// Delete background operation
     pub fn del_background_operation(operation: String) {
       template("lxc", vec!["operation".to_string(), "delete".to_string(), operation.to_string()], "Failed to delete background operation");
     }
-
+    
+    /// Get details about current background operation
     pub fn get_background_operation_details(operation: String) {
       template("lxc", vec!["operation".to_string(), "delete".to_string(), operation.to_string()], "Failed to get background operation details");
     }
@@ -537,40 +606,49 @@ pub use snapshot::*;
   // Project
   pub mod project {
     use crate::template::template;
-
-    pub fn get_projects() {
-      template("lxc", vec!["project".to_string(), "list".to_string()], "Failed to get all projects");
+    
+    /// Get local projects
+    pub fn get_local_projects() {
+      template("lxc", vec!["project".to_string(), "list".to_string(), "local:".to_string()], "Failed to get all projects");
     }
-
+    
+    /// Rename current project
     pub fn rename_project(oldname: String, newname: String) {
       template("lxc", vec!["project".to_string(), "rename".to_string(), oldname.to_string(), newname.to_string()], "Failed to rename project");
     }
-
+    
+    /// Delete current project
     pub fn delete_project(project: String) {
       template("lcx", vec!["project".to_string(), "delete".to_string(), project.to_string()], "Failed to delete project");
     }
-
+    
+    /// Get details about current project
     pub fn get_project_details(project: String) {
       template("lxc", vec!["project".to_string(), "info".to_string(), project.to_string()], "Failed to get project details");
     }
-
+    
+    /// Get options by current project 
     pub fn get_project_options(project: String) {
       template("lxc", vec!["project".to_string(), "show".to_string(), project.to_string()], "Failed to get project options");
     }
-
+    
+    /// Switch current project
     pub fn switch_current_project(another_project: String) {
       template("lxc", vec!["project".to_string(), "switch".to_string(), another_project.to_string()], "Failde to switch from current project to another");
     }
-
+    
+    /// Create new project
     pub fn create_project(title: String) {
       template("lxc", vec!["project".to_string(), "create".to_string(), title.to_string()], "Failed to create new project");
     }
-
-    pub fn set_project_config_key(project: String, key: String, value: String) {
+    
+    /// Set project config property 
+    pub fn set_project_config_property(project: String, key: String, value: String) {
       template("lxc", vec!["project".to_string(), "set".to_string(), project.to_string(), key.to_string(), value.to_string()], "Failed to set project configuration key");
     }
-
-    pub fn unset_project_config_key(project: String, key: String) {
+    
+    /// Unset project config property
+    pub fn unset_project_config_property(project: String, key: String) {
       template("lxc", vec!["project".to_string(), "unset".to_string(), project.to_string(), key.to_string()], "Failed to unset project configuration key");
     }
   }
