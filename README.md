@@ -13,10 +13,10 @@ Example
 ```rs
 extern crate lxc_rs;
 
-use lxc_rs::{Container};
+use lxc_rs::{container};
 
 fn main() {
-  Container.get_local_lxc(); // Prints you a list of you'r local lxc in console
+  container.get_local_lxc(); // Prints you a list of you'r local lxc in console
 }
 ```
 

@@ -39,9 +39,34 @@ pub use snapshot::*;
     }
     
     /// Get current Lxd version
-    pub fn get_lxc_version() {
-      template("lxc", vec!["--version".to_string()], "Try of get lxc was failed");
+    pub fn get_lxd_version() {
+      template("lxd", vec!["version".to_string()], "Try of get lxc was failed");
     }
+    
+    /// Shutdown LXD with containers and exit
+    pub fn shutdown_lxd() {
+      template("lxd", vec!["shutdown".to_string()], "Try of shutdown lxd process was failed")
+    }
+    
+    /// Show cluster configuration as YAML.
+    pub fn get_lxd_cluster_config() {
+      template("lxd", vec!["cluster".to_string(), "show".to_string()], "Try of get lxd cluster configuration was failed") 
+    }
+    
+    /// Print the addresses of the cluster members serving the database
+    pub fn get_lxd_cluster_databases() {
+      template("lxd", vec!["cluster".to_string(), "list-database".to_string()], "Try of get list of lxd cluster databases was failed")
+    }
+    
+    /// Remove a raft node from the raft configuration
+    pub fn del_lxd_cluster_raft_node_config(raft_node: String) {
+      template("lxd", vec!["cluster".to_string(), "remove-raft-node".to_string(), raft_node.to_string()], "Try of delete raft node from lxd cluster raft node config was failed")
+    }
+
+    /// Recover a LXD instance whose cluster has lost quorum
+    pub fn recover_lxd_instance_lost_quorum() {
+      template("lxd", vec!["cluster".to_string(), "recover-from-quorum-loss".to_string()], "Try of recover lxd cluster instance with lost quorum was failed")
+    } 
   }
 
   // Images

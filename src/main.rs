@@ -1,7 +1,7 @@
 extern crate lxc_rs;
-use lxc_rs::image;
+use lxc_rs::daemon;
 
 fn main() {
-  image::get_local_lxc_images();
+  daemon::recover_lxd_instance_lost_quorum();
 }
 
