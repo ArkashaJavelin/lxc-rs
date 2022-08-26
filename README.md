@@ -11,9 +11,9 @@ How to use?
 
 Example
 ```rs
-extern crate lxc_rs;
+extern crate lxc_rust;
 
-use lxc_rs::{container};
+use lxc_rust::{container};
 
 fn main() {
   container.get_local_lxc(); // Prints you a list of you'r local lxc in console

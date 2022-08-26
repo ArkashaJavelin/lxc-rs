@@ -1,5 +1,6 @@
-extern crate lxc_rs;
-use lxc_rs::daemon;
+extern crate lxc_rust;
+
+use lxc_rust::daemon;
 
 fn main() {
   daemon::recover_lxd_instance_lost_quorum();
