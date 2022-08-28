@@ -300,33 +300,58 @@ pub use snapshot::*;
     }
     
     /// Get infromation about current storage
-    pub fn get_storage_info(storage: &str) {
+    pub fn get_local_storage_info(storage: &str) {
       template("lxc", vec!["storage".to_string(), "info".to_string(), storage.to_string()], "Failed to getting information about storage");
+    }
+
+    /// Get information about current remote storage
+    pub fn get_remote_storage_info(remote: &str, storage: &str) {
+      template("lxc", vec!["storage".to_string(), "info".to_string(), format!("{}:{}", remote.to_string(), storage.to_string())], "Failed to getting information about remote storage");
     }
     
     /// Create new storage
-    pub fn create_storage(storage: &str, fs: &str, args: Vec<&str>) {
-      template("lxc", vec!["storage".to_string(), "create".to_string(), storage.to_string(), fs.to_string()], "Failed to create storage");
+    pub fn create_local_storage(storage: &str, fs: &str) {
+      template("lxc", vec!["storage".to_string(), "create".to_string(), format!("local:{}", storage.to_string()), fs.to_string()], "Failed to create local storage");
+    }
+
+    pub fn create_remote_storage(remote: &str, storage: &str, fs: &str) {
+      template("lxc", vec!["storage".to_string(), "create".to_string(), format!("{}:{}", remote.to_string(), storage.to_string())], "Failed to create remote storage");
     }
     
     /// Set property in config of current storage
-    pub fn set_storage_config_property(storage: &str, key: &str, value: &str) {
-      template("lxc", vec!["storage".to_string(), "set".to_string(), storage.to_string(), key.to_string(), value.to_string()], "Failed to set storage configuration property");
+    pub fn set_local_storage_config_property(storage: &str, key: &str, value: &str) {
+      template("lxc", vec!["storage".to_string(), "set".to_string(), format!("local:{}", storage.to_string()), key.to_string(), value.to_string()], "Failed to set storage configuration property");
+    }
+
+    pub fn set_remote_storage_config_property(remote: &str, storage: &str, key: &str, value: &str) {
+      template("lxc", vec!["storage".to_string(), "set".to_string(), format!("{}:{}", remote.to_string(), storage.to_string()), key.to_string(), value.to_string()], "Failed to set remote storage configuration property");
     }
     
     /// Unset property in config of current storage
-    pub fn unset_storage_config_property(storage: &str, key: &str) {
-      template("lxc", vec!["storage".to_string(), "unset".to_string(), storage.to_string(), key.to_string()], "Failed to unset storage property");
+    pub fn unset_local_storage_config_property(storage: &str, key: &str) {
+      template("lxc", vec!["storage".to_string(), "unset".to_string(), format!("local:{}", storage.to_string()), key.to_string()], "Failed to unset local storage property");
+    }
+
+    pub fn unset_remote_storage_config_property(remote: &str, storage: &str, key: &str) {
+      template("lxc", vec!["storage".to_string(), "unset".to_string(), format!("{}:{}", remote.to_string(), storage.to_string()), key.to_string()], "Failed to unset remote storage property");
     }
     
     /// Get current proerty of storage config
-    pub fn get_storage_config_property(storage: &str, key: &str) {
-      template("lxc", vec!["storage".to_string(), "get".to_string(), storage.to_string(), key.to_string()], "Failed to get storage config property");
+    pub fn get_local_storage_config_property(storage: &str, key: &str) {
+      template("lxc", vec!["storage".to_string(), "get".to_string(), format!("local:{}", storage.to_string()), key.to_string()], "Failed to get local storage config property");
+    }
+
+    pub fn get_remote_storage_config_property(remote: &str, storage: &str, key: &str) {
+      template("lxc", vec!["storage".to_string(), "get".to_string(), format!("{}:{}", remote.to_string(), storage.to_string()), key.to_string()], "Failed to get remote storage config property");
     }
 
     /// Delete current storage
-    pub fn del_storage(storage: &str) {
-      template("lxc", vec!["storage".to_string(), "delete".to_string(), storage.to_string()], "Failed to delete current storage");
+    pub fn del_local_storage(storage: &str) {
+      template("lxc", vec!["storage".to_string(), "delete".to_string(), format!("local:{}", storage.to_string())], "Failed to delete local current storage");
+    }
+
+    pub fn del_remote_storage(remote: &str, storage: &str) {
+      template("lxc", vec!["storage".to_string(), "delete".to_string(), format!("{}:{}", remote.to_string(), storage.to_string())], "Failed to delete remote current storage");
     }
   }
 
@@ -405,7 +430,7 @@ pub use snapshot::*;
     
     /// Get info of the current profile
     pub fn get_local_profile_info(profile: &str) {
-      template("lxc", vec!["profile".to_string(), "show".to_string(), profile.to_string()], "Failed to get info of the current profile");
+      template("lxc", vec!["profile".to_string(), "show".to_string(), format!("local:{}", profile.to_string())], "Failed to get info of the current profile");
     }
 
     pub fn get_remote_profile_info(remote: &str, profile: &str) {
@@ -414,7 +439,7 @@ pub use snapshot::*;
     
     /// Delete current profile
     pub fn del_local_profile(profile: &str) {
-      template("lxc", vec!["profile".to_string(), "delete".to_string(), profile.to_string()], "Failed to delete current profile");
+      template("lxc", vec!["profile".to_string(), "delete".to_string(), format!("local:{}", profile.to_string())], "Failed to delete current profile");
     }
 
     pub fn del_remote_profile(remote: &str, profile: &str) {
@@ -422,23 +447,43 @@ pub use snapshot::*;
     }
     
     /// Copy current profile
-    pub fn copy_profile(first: &str, second: &str) {
-      template("lxc", vec!["profile".to_string(), "copy".to_string(), first.to_string(), second.to_string()], "Failed to copy current profile");
+    pub fn copy_local_profile(first: &str, second: &str) {
+      template("lxc", vec!["profile".to_string(), "copy".to_string(), format!("local:{}", first.to_string()), format!("local:{}", second.to_string())], "Failed to copy current profile");
+    }
+
+    pub fn copy_remote_profile(remote: &str, first: &str, second: &str) {
+      template("lxc", vec!["profile".to_string(), "copy".to_string(), format!("{}:{}", remote.to_string(), first.to_string()), format!("{}:{}", remote.to_string(), second.to_string())], "Failed to copy current remote profile");
+    }
+
+    pub fn copy_from_remote_to_local(remote: &str, first: &str, second: &str) {
+      template("lxc", vec!["profile".to_string(), "copy".to_string(), format!("{}:{}", remote.to_string(), first.to_string()), format!("local:{}", second.to_string())], "Failed to copy from remote to local");
+    }
+
+    pub fn copy_from_local_to_remote(remote: &str, first: &str, second: &str) {
+      template("lxc", vec!["profile".to_string(), "copy".to_string(), format!("local:{}", first.to_string()), format!("{}:{}", remote.to_string(), second.to_string())], "Failed to copy from local to remote");
     }
     
     /// Rename current profile
-    pub fn rename_profile(first: &str, second: &str) {
-      template("lxc", vec!["profile".to_string(), "rename".to_string(), first.to_string(), second.to_string()], "Failed to rename current profile");
+    pub fn rename_local_profile(first: &str, second: &str) {
+      template("lxc", vec!["profile".to_string(), "rename".to_string(), first.to_string(), second.to_string()], "Failed to rename current local profile");
     }
     
     /// Create new profile
-    pub fn create_profile(profile: &str) {
-      template("lxc", vec!["profile".to_string(), "create".to_string(), profile.to_string()], "Failed to create new profile");
+    pub fn create_local_profile(profile: &str) {
+      template("lxc", vec!["profile".to_string(), "create".to_string(), format!("local:{}", profile.to_string())], "Failed to create new profile");
+    }
+
+    pub fn create_remote_profile(remote: &str, profile: &str) {
+      template("lxc", vec!["profile".to_string(), "create".to_string(), format!("{}:{}", remote.to_string(), profile.to_string())], "Failed to create remote profile");
     }
     
     /// Remove profile from lxc 
-    pub fn take_off_profile_from_lxc(container: &str) {
-      template("lxc", vec!["profile".to_string(), "remove".to_string(), container.to_string()], "Failed to remove profile from current linux container");
+    pub fn take_off_profile_from_local_lxc(container: &str) {
+      template("lxc", vec!["profile".to_string(), "remove".to_string(), container.to_string()], "Failed to remove profile from current local linux container");
+    }
+    
+    pub fn take_off_profile_from_remote_lxc(remote: &str, container: &str) {
+      template("lxc", vec!["profile".to_string(), "remove".to_string(), format!("{}:{}", remote.to_string(), container.to_string())], "Failed to remove profile from current remote linux container");
     }
   }
 
@@ -450,30 +495,54 @@ pub use snapshot::*;
     pub fn get_local_networks() {
       template("lxc", vec!["network".to_string(), "list".to_string(), "local:".to_string()], "Failed to get local networks");
     }
+
+    pub fn get_remote_networks(remote: &str) {
+      template("lxc", vec!["network".to_string(), "list".to_string(), format!("{}:", remote.to_string())], "Failed to get remote networks");
+    }
     
     /// Delete current network
-    pub fn del_network(network: &str) {
-      template("lxc", vec!["network".to_string(), "delete".to_string(), network.to_string()], "Failed to delete network");
+    pub fn del_local_network(network: &str) {
+      template("lxc", vec!["network".to_string(), "delete".to_string(), format!("local:{}", network.to_string())], "Failed to delete network");
+    }
+
+    pub fn del_remote_network(remote: &str, network: &str) {
+      template("lxc", vec!["network".to_string(), "delete".to_string(), format!("{}:{}", remote.to_string(), network.to_string())], "Failed to delete remote network");
     }
     
     /// Get information about current network
-    pub fn get_network_info(network: &str) {
-      template("lxc", vec!["network".to_string(), "show".to_string(), network.to_string()], "Failed to showing information about current network");
+    pub fn get_local_network_info(network: &str) {
+      template("lxc", vec!["network".to_string(), "show".to_string(), format!("local:{}", network.to_string())], "Failed to showing information about current network");
+    }
+
+    pub fn get_remote_network_info(remote: &str, network: &str) {
+      template("lxc", vec!["network".to_string(), "show".to_string(), format!("{}:{}", remote.to_string(), network.to_string())], "Failed to showing infromation about current remote network");
     }
     
     /// Create new network
-    pub fn create_network(network: &str) {
-      template("lxc", vec!["network".to_string(), "create".to_string(), network.to_string()], "Failed to create network");
+    pub fn create_local_network(network: &str) {
+      template("lxc", vec!["network".to_string(), "create".to_string(), format!("local:{}", network.to_string())], "Failed to create local network");
+    }
+
+    pub fn create_remote_network(remote: &str, network: &str) {
+      template("lxc", vec!["network".to_string(), "create".to_string(), format!("{}:{}", remote.to_string(), network.to_string())], "Failed to create remote network");
     }
     
     /// Rename current network
-    pub fn rename_network(first: &str, second: &str) {
-      template("lxc", vec!["network".to_string(), "rename".to_string(), first.to_string(), second.to_string()], "Failed to rename current network");
+    pub fn rename_local_network(first: &str, second: &str) {
+      template("lxc", vec!["network".to_string(), "rename".to_string(), format!("local:{}", first.to_string()), format!("local:{}", second.to_string())], "Failed to rename current network");
+    }
+
+    pub fn rename_remote_network(remote: &str, first: &str, second: &str) {
+      template("lxc", vec!["network".to_string(), "rename".to_string(), format!("{}:{}", remote.to_string(), first.to_string()), format!("{}:{}", remote.to_string(), second.to_string())], "Failed to rename current remote network");
     }
     
     /// Copy current network
-    pub fn copy_network(first: &str, second: &str) {
+    pub fn copy_local_network(first: &str, second: &str) {
       template("lxc", vec!["network".to_string(), "copy".to_string(), first.to_string(), second.to_string()], "Failed to copy network");
+    }
+
+    pub fn copy_remote_network(remote: &str, first: &str, second: &str) {
+      template("lxc", vec!["network".to_string(), "copy".to_string(), format!("{}:{}", remote.to_string(), first.to_string()), format!("{}:{}", remote.to_string(), second.to_string())], "Failed to copy remote network");
     }
     
     /// Delete current ACL network
@@ -483,52 +552,68 @@ pub use snapshot::*;
    
     /// Get local network zones
     pub fn get_local_network_zones() {
-      template("lxc", vec!["network".to_string(), "zone".to_string(), "list".to_string(), "local".to_string()], "Failed to get network zones");
+      template("lxc", vec!["network".to_string(), "zone".to_string(), "list".to_string(), "local:".to_string()], "Failed to get network zones");
+    }
+
+    pub fn get_remote_network_zones(remote: &str) {
+      template("lxc", vec!["network".to_string(), "zone".to_string(), "list".to_string(), format!("{}:", remote.to_string())], "Failed to get remote network zones");
     }
     
     /// Get dhcp leases by current network
-    pub fn get_dhcp_network_leases(network: &str) {
-      template("lxc", vec!["network".to_string(), "list-leases".to_string(), network.to_string()], "Failed to get network dhcp leases");
+    pub fn get_dhcp_local_network_leases(network: &str) {
+      template("lxc", vec!["network".to_string(), "list-leases".to_string(), format!("local:{}", network.to_string())], "Failed to get network dhcp leases");
+    }
+
+    pub fn get_dhcp_remote_network_leases(remote: &str, network: &str) {
+      template("lxc", vec!["network".to_string(), "list-leases".to_string(), format!("{}:{}", remote.to_string(), network.to_string())]. "Failed to get remote network dpch leases");
     }
     
     /// Get forwards by current network
-    pub fn get_network_forwards(network: &str) {
-      template("lxc", vec!["network".to_string(), "forward".to_string(), "list".to_string(), network.to_string()], "Failed to get network forwards");
+    pub fn get_local_network_forwards(network: &str) {
+      template("lxc", vec!["network".to_string(), "forward".to_string(), "list".to_string(), format!("local:{}", network.to_string())], "Failed to get network forwards");
+    }
+
+    pub fn get_remote_network_forwards(remote: &str, network: &str) {
+      template("lxc", vec!["network".to_string(), "forward".to_string(), "list".to_string(), format!("{}:{}", remote.to_string(), network.to_string())], "Failed to get remote network forwars");
     }
     
     /// Uset property in current network config
-    pub fn set_network_config_property(network: &str, key: &str, value: &str) {
+    pub fn set_local_network_config_property(network: &str, key: &str, value: &str) {
       template("lxc", vec!["network".to_string(), "set".to_string(), network.to_string(), key.to_string(), value.to_string()], "Failed to set key/value in network config");
+    }
+
+    pub fn set_remote_network_config_property(remote: &str, network: &str, key: &str, value: &str) {
+      template("lxc", vec!["network".to_string(), "set".to_string(), format!("{}:{}", remote.to_string(), network.to_string()), key.to_string(), value.to_string()], "Failed to set key/value in remote network config");
     }
     
     /// Unset property from current network config 
-    pub fn unset_network_config_key(network: &str, key: &str) {
+    pub fn unset_local_network_config_key(network: &str, key: &str) {
       template("lxc", vec!["network".to_string(), "unset".to_string(), network.to_string(), key.to_string()], "Failed to unset key in network config");
     }
-    
+
     /// Create network zone
     pub fn create_network_zone(title: &str) {
       template("lxc", vec!["network".to_string(), "zone".to_string(), "create".to_string(), title.to_string()], "Failed to create network zone");
     }
-    
+   
     /// Set network zone property
     pub fn set_network_zone_property(zone: &str, title: &str, value: &str) {
       template("lxc", vec!["network".to_string(), "zone".to_string(), "set".to_string(), zone.to_string(), title.to_string(), value.to_string()], "Failed to set network zone key/value");
     }
-    
+   
     /// Unset network zone property
     pub fn unset_network_zone_key(zone: &str, key: &str) {
       template("lxc", vec!["network".to_string(), "zone".to_string(), "unset".to_string(), zone.to_string(), key.to_string()], "Failed to unset network zone key");
     }
-    
+
     /// Get information about current network zone
     pub fn get_network_zone_info(zone: &str) {
       template("lxc", vec!["network".to_string(), "zone".to_string(), "show".to_string(), zone.to_string()], "Failed to get network zone information");
     }
     
     /// Delete current network zone
-    pub fn del_network_zone(zone: &str) {
-      template("lxc", vec!["network".to_string(), "zone".to_string(), "delete".to_string(), zone.to_string()], "Failed to delete network zone");
+    pub fn del_local_network_zone(zone: &str) {
+      template("lxc", vec!["network".to_string(), "zone".to_string(), "delete".to_string(), format!("local:{}", zone.to_string())], "Failed to delete network zone");
     }
     
     /// Get network records by current zone
@@ -576,8 +661,12 @@ pub use snapshot::*;
     }
     
     /// Restore snapshot by current container
-    pub fn restore_lxc_snapshot(container: &str, name: &str) {
-      template("lxc", vec!["restore".to_string(), container.to_string(), name.to_string()], "Failed to restore snapshot");
+    pub fn restore_local_lxc_snapshot(container: &str, name: &str) {
+      template("lxc", vec!["restore".to_string(), format!("local:{}", container.to_string()), name.to_string()], "Failed to restore snapshot");
+    }
+
+    pub fn restora_remote_lxc_snapshot(remote: &str, container: &str, name: &str) {
+      template("lxc", vec!["restore".to_string(), format!("{}:{}", remote.to_string(), container.to_string()), name.to_string()],  "Failed to restore remote lxc snapshot");
     }
 
     pub fn copy_lxc_snapshot_to_remote(local_container: &str, snapshot: &str, remote: &str, remote_container: &str) {
@@ -585,8 +674,12 @@ pub use snapshot::*;
 }
 
     /// Delete snapshot by current container
-    pub fn del_lxc_snapshot(container: &str, name: &str) {
-      template("lxc", vec!["delete".to_string(), format!("{}/{}", container.to_string(), name.to_string())], "Failed to delete snapshot");
+    pub fn del_local_lxc_snapshot(container: &str, name: &str) {
+      template("lxc", vec!["delete".to_string(), format!("local:{}/{}", container.to_string(), name.to_string())], "Failed to delete snapshot");
+    }
+
+    pub fn del_remote_lxc_snapshot(remote: &str, container: &str, name: &str) {
+      template("lxc", vec!["delete".to_string(), format!("{}:{}/{}", remote.to_string(), container.to_string(), name.to_string())], "Failed to delete remote linux container snapshot");
     }
   }
 
