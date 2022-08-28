@@ -1,8 +1,6 @@
-extern crate lxc_rust;
-
-use lxc_rust::daemon;
+use lxc_rust::image;
 
 fn main() {
-  daemon::recover_lxd_instance_lost_quorum();
+  image::search_lxc_image("fedora/36");
 }
 
