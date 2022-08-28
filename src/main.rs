@@ -1,6 +1,6 @@
-use lxc_rust::image;
+use lxc_rust::{image, container, storage, snapshot};
 
 fn main() {
-  image::search_lxc_image("fedora/36");
+    snapshot::create_local_lxc_stateless_snapshot("fedora36-container", "my-fedora-snapshot");
 }
 
