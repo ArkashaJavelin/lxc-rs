@@ -74,7 +74,7 @@ pub use snapshot::*;
     use crate::template::template;
     
     /// Get you'r local lxc images
-    pub fn get_local_lxc_images() {
+    pub fn get_local_lxc_images(flags: Option<Vec<&str>>) {
       template("lxc", vec!["image".to_string(), "list".to_string(), "local:".to_string()], "Try of get lxc was failed");
     }
     
@@ -565,7 +565,7 @@ pub use snapshot::*;
     }
 
     pub fn get_dhcp_remote_network_leases(remote: &str, network: &str) {
-      template("lxc", vec!["network".to_string(), "list-leases".to_string(), format!("{}:{}", remote.to_string(), network.to_string())]. "Failed to get remote network dpch leases");
+      template("lxc", vec!["network".to_string(), "list-leases".to_string(), format!("{}:{}", remote.to_string(), network.to_string())], "Failed to get remote network dpch leases");
     }
     
     /// Get forwards by current network
